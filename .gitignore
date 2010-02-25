@@ -1,2 +1,13 @@
 build
-bin
+bin/Particles1Debug.app
+bin/particles5Debug.app
+bin/glparticles1Debug.app
+bin/data/OMS_2320103518.tiff
+bin/data/OMS_2320103618.tiff
+bin/data/OMS_292009180.tiff
+bin/data/OMS_292009350.tiff
+bin/data/exp_282009223.png
+bin/data/exp_2920091311.png
+bin/data/exp_2920092021.png
+bin/data/exp_2920092815.png
+bin/data/high.png
