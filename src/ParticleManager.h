@@ -35,8 +35,8 @@ public:
 
 
 
-class ParticleManager {
-
+class ParticleManager 
+{
 	
 public:
 	
@@ -54,9 +54,10 @@ public:
 	// Values
 	float		dim[MAX_PARTICLES];			// particle size (w/h)
 	PVert		pos[MAX_PARTICLES*4];		// vertex (quad) of particle
+	PVert		oldpos[MAX_PARTICLES];	
 	PTexture	texcords[MAX_PARTICLES*4];	// texture coords
 	PColor		color[MAX_PARTICLES*4];		// particle color rgba
-	
+	PVert		vel[MAX_PARTICLES];
 	
 	float		radians[MAX_PARTICLES];
 	float		radius[MAX_PARTICLES];
@@ -64,9 +65,10 @@ public:
 	float		time[MAX_PARTICLES];
 	float		timeAdd[MAX_PARTICLES];
 	
+	bool flyaway;
+	
 	// ------------------------------------------
 	ParticleManager();
-	
 	
 	// ------------------------------------------
 	void setParticleColor(int i, float r, float g, float b, float a=0.0);
@@ -102,6 +104,8 @@ public:
 	
 	// ------------------------------------------
 	void render();
+	
+	void setFlyAway();
 	
 	
 };

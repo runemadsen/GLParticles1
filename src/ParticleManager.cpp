@@ -2,127 +2,19 @@
 
 #include "ParticleManager.h"
 
+/*	Constructor
+________________________________________________________________________________ */
+
 ParticleManager::ParticleManager() 
 {
+	flyaway = false;
 }
 
+/*	Load Texture
+ ________________________________________________________________________________ */
 
-// ------------------------------------------ set texture coords
-void ParticleManager::setParticleTexCoords(int i, float columnID, float rowID) 
-{	
-	if(i < 0)				i = 0;
-	if(i > MAX_PARTICLES)	i = MAX_PARTICLES;
-	
-	if(columnID > cellColls) columnID = cellColls;
-	if(rowID    > cellRows)	 rowID	  = cellRows;
-	
-	if(columnID < 0) columnID = 0;
-	if(rowID < 0)	 rowID	  = 0;
-	
-	
-	
-	// get the cell image width
-	float cellWidth  = texW / cellRows;
-	float cellHeight = texH / cellColls;
-	
-	float row = rowID;
-	float col = columnID;
-	
-	// P1
-	texcords[(i*4)+0].u = (cellWidth * row)		/ texW;
-	texcords[(i*4)+0].v = (cellHeight * col)	/ texH;
-	
-	// P2
-	texcords[(i*4)+1].u = ((cellWidth * row)	+ cellWidth)	/ texW;
-	texcords[(i*4)+1].v = (cellHeight * col)	/ texH;
-	
-	// P2
-	texcords[(i*4)+2].u = ((cellWidth * row) + cellWidth)		/ texW;
-	texcords[(i*4)+2].v = ((cellHeight * col) + cellHeight)	/ texH;	
-	
-	// P2
-	texcords[(i*4)+3].u = (cellWidth * row)		/ texW;
-	texcords[(i*4)+3].v = ((cellHeight * col)+cellHeight)	/ texH;	
-	
-	
-}
-
-// ------------------------------------------ set color
-void ParticleManager::setParticleColor(int i, float r, float g, float b, float a) 
+void ParticleManager::loadTexture(string path, int cellsInRow, int cellsInCol) 
 {
-	if(i < 0) i = 0;
-	if(i > MAX_PARTICLES) i = MAX_PARTICLES;
-	
-	
-	// Color 1
-	color[(i*4)+0].r = r;
-	color[(i*4)+0].g = g;
-	color[(i*4)+0].b = b;
-	//color[(i*4)+0].a = a;
-	
-	// Color 2
-	color[(i*4)+1].r = r;
-	color[(i*4)+1].g = g;
-	color[(i*4)+1].b = b;
-	//color[(i*4)+1].a = a;
-	
-	// Color 3
-	color[(i*4)+2].r = r;
-	color[(i*4)+2].g = g;
-	color[(i*4)+2].b = b;
-	//color[(i*4)+2].a = a;
-	
-	// Color 4
-	color[(i*4)+3].r = r;
-	color[(i*4)+3].g = g;
-	color[(i*4)+3].b = b;
-	//color[(i*4)+3].a = a;
-	
-}
-
-// ------------------------------------------ set position
-void ParticleManager::setParticlePos(int i, float px, float py, float pz) {
-	
-	if(i < 0)				i = 0;
-	if(i > MAX_PARTICLES)	i = MAX_PARTICLES;
-	
-	
-	// P1
-	pos[(i*4)+0].x = px;
-	pos[(i*4)+0].y = py;
-	pos[(i*4)+0].z = pz;
-	
-	// P2
-	pos[(i*4)+1].x = px + dim[i];
-	pos[(i*4)+1].y = py;
-	pos[(i*4)+1].z = pz;
-	
-	// P2
-	pos[(i*4)+2].x = px + dim[i];
-	pos[(i*4)+2].y = py + dim[i];
-	pos[(i*4)+2].z = pz;
-	
-	// P2
-	pos[(i*4)+3].x = px;
-	pos[(i*4)+3].y = py + dim[i];
-	pos[(i*4)+3].z = pz;
-	
-	
-	
-}
-
-// ------------------------------------------ set size of particle
-void ParticleManager::setParticleSize(int i, float particleDim) {
-	
-	if(i < 0)				i = 0;
-	if(i > MAX_PARTICLES)	i = MAX_PARTICLES;
-	
-	dim[i] = particleDim;
-}
-
-// ------------------------------------------ load textures
-void ParticleManager::loadTexture(string path, int cellsInRow, int cellsInCol) {
-
 	ofDisableArbTex();
 	texture.loadImage(path);
 	ofEnableArbTex();
@@ -134,10 +26,11 @@ void ParticleManager::loadTexture(string path, int cellsInRow, int cellsInCol) {
 	cellColls = cellsInCol; 
 }
 
+/*	Init
+ ________________________________________________________________________________ */
 
-
-// ------------------------------------------ init
-void ParticleManager::init() {
+void ParticleManager::init() 
+{
 	
 	noise = new ofxPerlin();
 	
@@ -192,8 +85,163 @@ void ParticleManager::init() {
 	
 }
 
+/*	Set texture coordinates
+ ________________________________________________________________________________ */
 
-// ------------------------------------------	
+void ParticleManager::setParticleTexCoords(int i, float columnID, float rowID) 
+{	
+	if(i < 0)				i = 0;
+	if(i > MAX_PARTICLES)	i = MAX_PARTICLES;
+	
+	if(columnID > cellColls) columnID = cellColls;
+	if(rowID    > cellRows)	 rowID	  = cellRows;
+	
+	if(columnID < 0) columnID = 0;
+	if(rowID < 0)	 rowID	  = 0;
+	
+	
+	
+	// get the cell image width
+	float cellWidth  = texW / cellRows;
+	float cellHeight = texH / cellColls;
+	
+	float row = rowID;
+	float col = columnID;
+	
+	// P1
+	texcords[(i*4)+0].u = (cellWidth * row)		/ texW;
+	texcords[(i*4)+0].v = (cellHeight * col)	/ texH;
+	
+	// P2
+	texcords[(i*4)+1].u = ((cellWidth * row)	+ cellWidth)	/ texW;
+	texcords[(i*4)+1].v = (cellHeight * col)	/ texH;
+	
+	// P2
+	texcords[(i*4)+2].u = ((cellWidth * row) + cellWidth)		/ texW;
+	texcords[(i*4)+2].v = ((cellHeight * col) + cellHeight)	/ texH;	
+	
+	// P2
+	texcords[(i*4)+3].u = (cellWidth * row)		/ texW;
+	texcords[(i*4)+3].v = ((cellHeight * col)+cellHeight)	/ texH;	
+	
+	
+}
+
+/*	Set Color
+ ________________________________________________________________________________ */
+
+void ParticleManager::setParticleColor(int i, float r, float g, float b, float a) 
+{
+	if(i < 0) i = 0;
+	if(i > MAX_PARTICLES) i = MAX_PARTICLES;
+	
+	// Color 1
+	color[(i*4)+0].r = r;
+	color[(i*4)+0].g = g;
+	color[(i*4)+0].b = b;
+	//color[(i*4)+0].a = a;
+	
+	// Color 2
+	color[(i*4)+1].r = r;
+	color[(i*4)+1].g = g;
+	color[(i*4)+1].b = b;
+	//color[(i*4)+1].a = a;
+	
+	// Color 3
+	color[(i*4)+2].r = r;
+	color[(i*4)+2].g = g;
+	color[(i*4)+2].b = b;
+	//color[(i*4)+2].a = a;
+	
+	// Color 4
+	color[(i*4)+3].r = r;
+	color[(i*4)+3].g = g;
+	color[(i*4)+3].b = b;
+	//color[(i*4)+3].a = a;
+	
+}
+
+/*	Set Particle Position
+ ________________________________________________________________________________ */
+
+void ParticleManager::setParticlePos(int i, float px, float py, float pz) 
+{	
+	if(i < 0)				i = 0;
+	if(i > MAX_PARTICLES)	i = MAX_PARTICLES;
+	
+	// Set old positions
+	
+	// Only save origin point
+	oldpos[i].x = pos[(i*4)+0].x;
+	oldpos[i].y = pos[(i*4)+0].y;
+	oldpos[i].z = pos[(i*4)+0].z;
+	
+	// Set new positions
+	
+	// P1
+	pos[(i*4)+0].x = px;
+	pos[(i*4)+0].y = py;
+	pos[(i*4)+0].z = pz;
+	
+	// P2
+	pos[(i*4)+1].x = px + dim[i];
+	pos[(i*4)+1].y = py;
+	pos[(i*4)+1].z = pz;
+	
+	// P3
+	pos[(i*4)+2].x = px + dim[i];
+	pos[(i*4)+2].y = py + dim[i];
+	pos[(i*4)+2].z = pz;
+	
+	// P4
+	pos[(i*4)+3].x = px;
+	pos[(i*4)+3].y = py + dim[i];
+	pos[(i*4)+3].z = pz;
+}
+
+/*	Add Position
+ ________________________________________________________________________________ */
+
+void ParticleManager::addPosition(int i, float x, float y, float z) {
+	
+	if(i < 0)				i = 0;
+	if(i > MAX_PARTICLES)	i = MAX_PARTICLES;
+	
+	// P1
+	pos[(i*4)+0].x += x;
+	pos[(i*4)+0].y += y;
+	pos[(i*4)+0].z += z;
+	
+	// P2
+	pos[(i*4)+1].x += x;
+	pos[(i*4)+1].y += y;
+	pos[(i*4)+1].z += z;
+	
+	// P2
+	pos[(i*4)+2].x += x;
+	pos[(i*4)+2].y += y;
+	pos[(i*4)+2].z += z;
+	
+	// P2
+	pos[(i*4)+3].x += x;
+	pos[(i*4)+3].y += y;
+	pos[(i*4)+3].z += z;
+}
+
+/*	Set Particle Size
+ ________________________________________________________________________________ */
+
+void ParticleManager::setParticleSize(int i, float particleDim) 
+{	
+	if(i < 0)				i = 0;
+	if(i > MAX_PARTICLES)	i = MAX_PARTICLES;
+	
+	dim[i] = particleDim;
+}
+
+/*	Update
+________________________________________________________________________________ */
+
 void ParticleManager::update() 
 {
 	float px;
@@ -205,85 +253,44 @@ void ParticleManager::update()
 	
 	for(int i=0; i<MAX_PARTICLES; i++) 
 	{		
-		radians[i] += rotspeed[i];
-		time[i] += timeAdd[i];
-		
-		noi = noise->noise((float)i/div, (float)time[i]) * mul;
-		
-		px = cos(radians[i]) * (radius[i] + noi) + ofGetWidth() / 2;
-		py = sin(radians[i]) * (radius[i] + noi) + ofGetHeight() / 2;
-		pz = 0;
-		setParticlePos(i, px, py, pz);
+		if(flyaway)
+		{
+			addPosition(i, vel[i].x, vel[i].y, vel[i].z);
+		}
+		else 
+		{
+			radians[i] += rotspeed[i];
+			time[i] += timeAdd[i];
+			
+			noi = noise->noise((float)i/div, (float)time[i]) * mul;
+			
+			px = cos(radians[i]) * (radius[i] + noi) + ofGetWidth() / 2;
+			py = sin(radians[i]) * (radius[i] + noi) + ofGetHeight() / 2;
+			pz = 0;
+			
+			// Set velocity
+			vel[i].x = px - oldpos[i].x;
+			vel[i].y = py - oldpos[i].y;
+			vel[i].z = pz - oldpos[i].z;
+			
+			setParticlePos(i, px, py, pz);
+		}		
 	}
-	
 }
 
-// ------------------------------------------ Add Particles
+/*	Add Particles
+ ________________________________________________________________________________ */
+
 void ParticleManager::addParticles(int amt, float _x, float _y, float _z) 
 {
 	
 }
 
-// ------------------------------------------
-void ParticleManager::render() {
-	
-	
-	// ofSetColor(255, 0, 0);
-	/*
-	 for (int i=0; i<MAX_PARTICLES; i++) {
-	 
-	 
-	 ofSetColor(0xffffff);
-	 
-	 
-	 ofEnableArbTex();
-	 texture.getTextureReference().bind();
-	 glBegin(GL_QUADS);
-	 
-	 float td = 64.0;
-	 float pd = ofNormalize(32, 0.0, td);
-	 
-	 
-	 // P1
-	 glVertex3f(pos[(i*4)+0].x,
-	 pos[(i*4)+0].y,
-	 pos[(i*4)+0].z);
-	 
-	 glTexCoord2f(0, 0);
-	 
-	 
-	 
-	 
-	 // P2
-	 glVertex3f(pos[(i*4)+1].x,
-	 pos[(i*4)+1].y,
-	 pos[(i*4)+1].z);
-	 
-	 glTexCoord2f(0.0, pd);
-	 
-	 
-	 
-	 // P3
-	 glVertex3f(pos[(i*4)+2].x,
-	 pos[(i*4)+2].y,
-	 pos[(i*4)+2].z);
-	 
-	 glTexCoord2f(pd, pd);
-	 
-	 
-	 // P4
-	 glVertex3f(pos[(i*4)+3].x,
-	 pos[(i*4)+3].y,
-	 pos[(i*4)+3].z);
-	 
-	 glTexCoord2f(pd, 0.0);
-	 
-	 glEnd();
-	 texture.getTextureReference().unbind();
-	 ofDisableArbTex();
-	 }
-	 */
-	
+/*	Render
+ ________________________________________________________________________________ */
+
+void ParticleManager::render() 
+{
 	
 	
 	glEnable(GL_TEXTURE_2D);	// Tells OpenGL that we want ot draw a 2d teture
@@ -335,5 +342,14 @@ void ParticleManager::render() {
 	glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
 	
 	
+}
+
+/*	Getter / Setter
+ ________________________________________________________________________________ */
+
+
+void ParticleManager::setFlyAway()
+{
+	flyaway = true;
 }
 
